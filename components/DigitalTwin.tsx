@@ -68,6 +68,8 @@ export default function DigitalTwin() {
     setLoading(true);
     setStreamingContent("");
 
+    // 45-second timeout so a slow provider doesn't silently stall forever
+    const timeout = setTimeout(() => abortRef.current?.abort(), 45000);
     abortRef.current = new AbortController();
 
     try {
@@ -79,7 +81,8 @@ export default function DigitalTwin() {
       });
 
       if (!res.ok) {
-        throw new Error(`HTTP ${res.status}`);
+        const errText = await res.text().catch(() => `HTTP ${res.status}`);
+        throw new Error(errText);
       }
 
       const reader = res.body?.getReader();
@@ -93,13 +96,10 @@ export default function DigitalTwin() {
         if (done) break;
 
         const chunk = decoder.decode(value, { stream: true });
-        const lines = chunk.split("\n");
-
-        for (const line of lines) {
+        for (const line of chunk.split("\n")) {
           if (!line.startsWith("data: ")) continue;
           const data = line.slice(6).trim();
           if (data === "[DONE]") continue;
-
           try {
             const json = JSON.parse(data);
             const delta = json.choices?.[0]?.delta?.content ?? "";
@@ -107,27 +107,35 @@ export default function DigitalTwin() {
               full += delta;
               setStreamingContent(full);
             }
-          } catch {
-            // partial JSON chunk — ignore
-          }
+          } catch { /* partial chunk */ }
         }
       }
 
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: full || "Sorry, I couldn't generate a response." },
+        { role: "assistant", content: full || "I received an empty response — please try again." },
       ]);
     } catch (err: unknown) {
-      if (err instanceof Error && err.name === "AbortError") return;
+      if (err instanceof Error && err.name === "AbortError") {
+        // Only show error if it wasn't a manual reset
+        if (loading) {
+          setMessages((prev) => [
+            ...prev,
+            { role: "assistant", content: "Response timed out — the model took too long. Please try again." },
+          ]);
+        }
+        return;
+      }
+      console.error("[DigitalTwin] chat error:", err);
       setMessages((prev) => [
         ...prev,
         {
           role: "assistant",
-          content:
-            "Hmm, something went wrong on my end. Try again in a moment!",
+          content: "Something went wrong on my end. Please try again.",
         },
       ]);
     } finally {
+      clearTimeout(timeout);
       setLoading(false);
       setStreamingContent("");
     }
