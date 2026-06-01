@@ -17,6 +17,17 @@ const STARTERS = [
   "Are you open to freelance work?",
 ];
 
+const MAX_USER_MESSAGES = 10;
+const CONTACT_EMAIL = "bamoaniyeboah@gmail.com";
+
+function errorMessage(err: unknown): string {
+  if (err instanceof Error && err.name === "AbortError") return "";
+  const msg = err instanceof Error ? err.message : String(err);
+  if (msg.includes("rate_limited") || msg.includes("429"))
+    return `The twin is a bit overwhelmed right now — email Bright directly at ${CONTACT_EMAIL} and he'll get back to you!`;
+  return `The twin is taking a break — email Bright at ${CONTACT_EMAIL} and he'll reply shortly.`;
+}
+
 function TypingDots() {
   return (
     <div className="flex items-center gap-1 px-4 py-3">
@@ -57,9 +68,12 @@ export default function DigitalTwin() {
     }
   }, [open]);
 
+  const userMessageCount = messages.filter((m) => m.role === "user").length;
+  const atLimit = userMessageCount >= MAX_USER_MESSAGES;
+
   const sendMessage = useCallback(async (text?: string) => {
     const userText = (text ?? input).trim();
-    if (!userText || loading) return;
+    if (!userText || loading || atLimit) return;
 
     const userMsg: Message = { role: "user", content: userText };
     const history = [...messages, userMsg];
@@ -82,7 +96,7 @@ export default function DigitalTwin() {
 
       if (!res.ok) {
         const errText = await res.text().catch(() => `HTTP ${res.status}`);
-        throw new Error(errText);
+        throw new Error(errText.includes("rate_limited") || res.status === 429 ? "rate_limited" : errText);
       }
 
       const reader = res.body?.getReader();
@@ -116,30 +130,16 @@ export default function DigitalTwin() {
         { role: "assistant", content: full || "I received an empty response — please try again." },
       ]);
     } catch (err: unknown) {
-      if (err instanceof Error && err.name === "AbortError") {
-        // Only show error if it wasn't a manual reset
-        if (loading) {
-          setMessages((prev) => [
-            ...prev,
-            { role: "assistant", content: "Response timed out — the model took too long. Please try again." },
-          ]);
-        }
-        return;
-      }
+      if (err instanceof Error && err.name === "AbortError") return;
       console.error("[DigitalTwin] chat error:", err);
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "assistant",
-          content: "Something went wrong on my end. Please try again.",
-        },
-      ]);
+      const msg = errorMessage(err);
+      if (msg) setMessages((prev) => [...prev, { role: "assistant", content: msg }]);
     } finally {
       clearTimeout(timeout);
       setLoading(false);
       setStreamingContent("");
     }
-  }, [input, loading, messages]);
+  }, [input, loading, messages, atLimit]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -476,7 +476,7 @@ export default function DigitalTwin() {
                     e.target.style.height = `${Math.min(e.target.scrollHeight, 120)}px`;
                   }}
                   onKeyDown={handleKeyDown}
-                  disabled={loading}
+                  disabled={loading || atLimit}
                   className="flex-1 bg-transparent text-sm resize-none outline-none leading-relaxed"
                   style={{
                     color: "var(--foreground)",
@@ -486,23 +486,36 @@ export default function DigitalTwin() {
                 />
                 <button
                   onClick={() => sendMessage()}
-                  disabled={!input.trim() || loading}
+                  disabled={!input.trim() || loading || atLimit}
                   className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-all duration-200"
                   style={{
-                    background: input.trim() && !loading ? "var(--cyan)" : "var(--border)",
-                    color: input.trim() && !loading ? "#000" : "var(--muted)",
-                    cursor: input.trim() && !loading ? "pointer" : "not-allowed",
+                    background: input.trim() && !loading && !atLimit ? "var(--cyan)" : "var(--border)",
+                    color: input.trim() && !loading && !atLimit ? "#000" : "var(--muted)",
+                    cursor: input.trim() && !loading && !atLimit ? "pointer" : "not-allowed",
                   }}
                 >
                   <Send size={14} />
                 </button>
               </div>
-              <p
-                className="text-center text-xs mt-2"
-                style={{ color: "var(--muted)" }}
-              >
-                Powered by AI · Enter to send · Shift+Enter for newline
-              </p>
+              {atLimit ? (
+                <p className="text-center text-xs mt-2">
+                  <span style={{ color: "var(--muted)" }}>Session limit reached · </span>
+                  <a
+                    href={`mailto:${CONTACT_EMAIL}`}
+                    className="font-semibold underline"
+                    style={{ color: "var(--cyan)" }}
+                  >
+                    Email Bright directly
+                  </a>
+                </p>
+              ) : (
+                <p
+                  className="text-center text-xs mt-2"
+                  style={{ color: "var(--muted)" }}
+                >
+                  Powered by AI · Enter to send · Shift+Enter for newline
+                </p>
+              )}
             </div>
           </motion.div>
         )}

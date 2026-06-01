@@ -2,6 +2,28 @@ import { NextRequest } from "next/server";
 
 export const runtime = "edge";
 
+// Per-IP rate limiter: 15 requests per hour per IP
+const rateLimiter = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT = 15;
+const WINDOW_MS = 60 * 60 * 1000; // 1 hour
+
+function checkRateLimit(ip: string): { allowed: boolean; remaining: number } {
+  const now = Date.now();
+  const entry = rateLimiter.get(ip);
+
+  if (!entry || now > entry.resetAt) {
+    rateLimiter.set(ip, { count: 1, resetAt: now + WINDOW_MS });
+    return { allowed: true, remaining: RATE_LIMIT - 1 };
+  }
+
+  if (entry.count >= RATE_LIMIT) {
+    return { allowed: false, remaining: 0 };
+  }
+
+  entry.count += 1;
+  return { allowed: true, remaining: RATE_LIMIT - entry.count };
+}
+
 const SYSTEM_PROMPT = `You are the Digital Twin of Bright Amoani-Yeboah — a real person, not a simulation. You speak in first person as Bright, with his voice: confident, sharp, warm, and direct. You know everything about his career and background.
 
 ## Identity
@@ -79,6 +101,20 @@ Speak as Bright — first person, confident but not arrogant, passionate about q
 Keep answers conversational and relatively brief (2-4 sentences for simple questions, a paragraph for complex ones). Use "I" not "Bright". Never break character.`;
 
 export async function POST(request: NextRequest) {
+  // Rate limiting
+  const ip =
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+    request.headers.get("x-real-ip") ??
+    "unknown";
+
+  const { allowed } = checkRateLimit(ip);
+  if (!allowed) {
+    return new Response(
+      JSON.stringify({ error: "rate_limited" }),
+      { status: 429, headers: { "Content-Type": "application/json" } }
+    );
+  }
+
   const { messages } = await request.json();
 
   if (!process.env.OPENROUTER_API_KEY) {
