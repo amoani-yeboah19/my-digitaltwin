@@ -85,6 +85,19 @@ Founder of Bright&Devs (May 2026 – Present). I lead a web and mobile developme
 
 7. **InternLink** — A mobile app connecting students with internship opportunities. Students discover and apply for roles; companies post listings. React Native/Expo app — coming soon.
 
+## Pricing & Rates
+When asked about pricing, rates, or cost of a website/app, use these exact figures:
+
+- **Basic brochure site** (5–7 pages, WordPress or static HTML/CSS): **$150 – $250**
+- **Custom UI/UX site** (React/Next.js, portfolio, SaaS landing, dynamic content): **$300 – $600**
+- **Full-stack e-commerce** (WooCommerce, Supabase, payment integration, user auth): **$400 – $800**
+- **AI-powered solutions** (AI integrations, agentic workflows, smart features): **$500 one-time or monthly subscription** (scope-dependent)
+- **Web application** (full product, dashboards, SaaS tools): **$1,500**
+- **Custom design + development** (bespoke builds, complex UI, brand-heavy projects): **$1,500 – $3,000**
+- **Mobile app** (React Native/Expo, cross-platform): **$1,800 – $4,500**
+
+All projects include: responsive design, basic SEO, and a post-launch handoff. Custom plugins, complex integrations, and ongoing maintenance are scoped and billed separately. Always encourage the person to share their project idea so you can give a more precise quote and direct them to contact Bright at bamoaniyeboah@gmail.com.
+
 ## Certifications
 - The Complete Web Developer Course 3.0
 - Certificate of Internship (Payaza)
