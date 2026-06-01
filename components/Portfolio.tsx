@@ -2,81 +2,111 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { ExternalLink, Lock, Sparkles } from "lucide-react";
+import { ExternalLink, Clock, ArrowUpRight } from "lucide-react";
 
-const placeholderProjects = [
+type Project = {
+  tag: string;
+  title: string;
+  desc: string;
+  tech: string[];
+  color: string;
+  status: "live" | "coming-soon";
+  live?: string;
+  github?: string;
+};
+
+const projects: Project[] = [
   {
-    tag: "Fintech",
-    title: "Payment Gateway UI",
-    desc: "A sleek, enterprise-grade payment flow interface built with Next.js and TypeScript.",
-    tech: ["Next.js", "TypeScript", "Tailwind"],
-    status: "coming-soon",
-    color: "var(--cyan)",
-  },
-  {
-    tag: "SaaS",
-    title: "AI Content Dashboard",
-    desc: "Real-time content management with AI-powered writing assistance baked in.",
-    tech: ["React", "OpenAI API", "Node.js"],
-    status: "coming-soon",
-    color: "#a78bfa",
-  },
-  {
-    tag: "WordPress",
-    title: "E-Commerce Platform",
-    desc: "Custom WooCommerce store with advanced filtering, performance optimization, and SEO.",
-    tech: ["WordPress", "PHP", "WooCommerce"],
-    status: "coming-soon",
-    color: "#34d399",
+    tag: "Freelance",
+    title: "Mansaray Landscape",
+    desc: "Professional website for a landscaping company — showcasing services and portfolio with fluid scroll animations, a modern layout, and a strong visual identity built to convert visitors into clients.",
+    tech: ["Next.js", "React", "Framer Motion", "Tailwind CSS"],
+    color: "#4ade80",
+    status: "live",
+    live: "https://mansaray-website-eta.vercel.app/",
+    github: "https://github.com/amoani-yeboah19/mansaray-website",
   },
   {
     tag: "Web App",
-    title: "Portfolio Generator",
-    desc: "A tool that generates beautiful developer portfolios from a GitHub profile in seconds.",
-    tech: ["Next.js", "GitHub API", "Framer"],
-    status: "coming-soon",
+    title: "ShopHant",
+    desc: "All-in-one platform merging e-commerce with an apprenticeship marketplace. Users can shop products and book skilled tradespeople — plumbers, electricians — in one seamless experience.",
+    tech: ["Next.js", "React", "shadcn/ui", "Supabase", "Framer Motion"],
+    color: "#60a5fa",
+    status: "live",
+    live: "https://v0-shop-hant-e-commerce-platform.vercel.app/",
+    github: "https://github.com/amoani-yeboah19/shophant-e-commerce-platform",
+  },
+  {
+    tag: "Freelance",
+    title: "SeluxOrganics",
+    desc: "E-commerce store for organic products featuring a monthly subscription model — customers can browse, purchase, and subscribe to recurring deliveries of premium organic goods.",
+    tech: ["Next.js", "React", "Supabase", "Tailwind CSS"],
+    color: "#34d399",
+    status: "live",
+    live: "https://seluxorganics-website-19i.vercel.app/subscriptions",
+    github: "https://github.com/amoani-yeboah19/seluxorganics-website",
+  },
+  {
+    tag: "WordPress",
+    title: "PizzaKing Ghana",
+    desc: "Full restaurant website with integrated e-commerce for a Ghanaian pizza brand — online ordering, menu management, and a branded experience built entirely on WordPress.",
+    tech: ["WordPress", "WooCommerce", "PHP", "Custom Theme"],
     color: "#fb923c",
+    status: "live",
+    live: "https://pizzakinggh.com/",
   },
   {
-    tag: "Mobile",
-    title: "Fintech Mobile App",
-    desc: "Cross-platform financial tracking app with real-time analytics and budgeting tools.",
-    tech: ["React Native", "Expo", "Supabase"],
+    tag: "WordPress",
+    title: "Dealogic Computers",
+    desc: "E-commerce store for computers and accessories serving the Ghanaian tech market — product catalog, filters, and a full shopping experience powered by WooCommerce.",
+    tech: ["WordPress", "WooCommerce", "PHP", "Custom Theme"],
+    color: "var(--cyan)",
+    status: "live",
+    live: "https://dealogiccomputers.com/",
+  },
+  {
+    tag: "Web App",
+    title: "closr",
+    desc: "A smart proposal generator for freelancers, agencies, and business owners — create polished, professional billing proposals in minutes, not hours. Currently in active development.",
+    tech: ["Next.js", "React", "TypeScript", "AI"],
+    color: "#a78bfa",
     status: "coming-soon",
+  },
+  {
+    tag: "Mobile App",
+    title: "InternLink",
+    desc: "A mobile platform bridging the gap between students and internship opportunities — students discover and apply for roles, companies post and manage listings, all in one app.",
+    tech: ["React Native", "Expo", "Mobile"],
     color: "#f472b6",
-  },
-  {
-    tag: "AI",
-    title: "Agentic Workflow Builder",
-    desc: "Drag-and-drop builder for creating autonomous AI agent workflows and pipelines.",
-    tech: ["Next.js", "LangChain", "Python"],
     status: "coming-soon",
-    color: "#facc15",
   },
 ];
 
-function ProjectCard({
-  project,
-  index,
-}: {
-  project: (typeof placeholderProjects)[0];
-  index: number;
-}) {
+function GitHubIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
+    </svg>
+  );
+}
+
+function ProjectCard({ project, index }: { project: Project; index: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
+  const isLive = project.status === "live";
 
   return (
     <motion.div
       ref={ref}
       initial={{ opacity: 0, y: 40 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-      className="group relative overflow-hidden rounded-xl card-glass transition-all duration-300"
-      style={{ minHeight: "220px" }}
+      transition={{ duration: 0.6, delay: index * 0.08, ease: "easeOut" }}
+      className="group relative flex flex-col rounded-xl card-glass transition-all duration-300"
+      style={{ minHeight: "240px" }}
       onMouseEnter={(e) => {
-        (e.currentTarget as HTMLElement).style.borderColor = `${project.color}44`;
+        (e.currentTarget as HTMLElement).style.borderColor = `${project.color}55`;
         (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
-        (e.currentTarget as HTMLElement).style.boxShadow = `0 12px 40px ${project.color}15`;
+        (e.currentTarget as HTMLElement).style.boxShadow = `0 16px 48px ${project.color}12`;
       }}
       onMouseLeave={(e) => {
         (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
@@ -84,7 +114,7 @@ function ProjectCard({
         (e.currentTarget as HTMLElement).style.boxShadow = "none";
       }}
     >
-      {/* Color accent top */}
+      {/* Top accent line */}
       <div
         style={{
           position: "absolute",
@@ -92,44 +122,62 @@ function ProjectCard({
           left: 0,
           right: 0,
           height: "2px",
+          borderRadius: "12px 12px 0 0",
           background: `linear-gradient(90deg, ${project.color}, transparent)`,
         }}
       />
 
-      <div className="p-6">
-        {/* Tag */}
-        <div className="flex items-center justify-between mb-3">
+      <div className="flex flex-col flex-1 p-6">
+        {/* Header row */}
+        <div className="flex items-start justify-between gap-2 mb-3">
           <span
-            className="text-xs font-semibold tracking-wider uppercase px-2.5 py-1 rounded-full"
+            className="text-xs font-semibold tracking-wider uppercase px-2.5 py-1 rounded-full shrink-0"
             style={{
-              background: `${project.color}15`,
+              background: `${project.color}18`,
               color: project.color,
-              border: `1px solid ${project.color}30`,
+              border: `1px solid ${project.color}35`,
             }}
           >
             {project.tag}
           </span>
-          <div
-            className="flex items-center gap-1 text-xs"
-            style={{ color: "var(--muted)" }}
-          >
-            <Lock size={11} />
-            <span>Coming soon</span>
-          </div>
+          {isLive ? (
+            <span
+              className="flex items-center gap-1 text-xs font-medium"
+              style={{ color: "#4ade80" }}
+            >
+              <span
+                className="w-1.5 h-1.5 rounded-full"
+                style={{ background: "#4ade80", boxShadow: "0 0 6px #4ade80" }}
+              />
+              Live
+            </span>
+          ) : (
+            <span
+              className="flex items-center gap-1 text-xs"
+              style={{ color: "var(--muted)" }}
+            >
+              <Clock size={11} />
+              In dev
+            </span>
+          )}
         </div>
 
+        {/* Title + desc */}
         <h3
-          className="font-semibold text-lg mb-2 transition-colors duration-200"
+          className="font-bold text-base mb-2"
           style={{ color: "var(--foreground)" }}
         >
           {project.title}
         </h3>
-        <p className="text-sm leading-relaxed mb-5" style={{ color: "var(--muted)" }}>
+        <p
+          className="text-sm leading-relaxed flex-1"
+          style={{ color: "var(--muted)" }}
+        >
           {project.desc}
         </p>
 
         {/* Tech stack */}
-        <div className="flex flex-wrap gap-1.5">
+        <div className="flex flex-wrap gap-1.5 mt-4 mb-4">
           {project.tech.map((t) => (
             <span
               key={t}
@@ -144,27 +192,65 @@ function ProjectCard({
             </span>
           ))}
         </div>
-      </div>
 
-      {/* Hover overlay */}
-      <div
-        className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-        style={{ background: "rgba(5,6,15,0.7)", backdropFilter: "blur(4px)" }}
-      >
-        <div className="text-center">
-          <Sparkles
-            size={28}
-            style={{ color: project.color, margin: "0 auto 8px" }}
-          />
-          <p
-            className="text-sm font-semibold"
-            style={{ color: "var(--foreground)" }}
-          >
-            Case study dropping soon
-          </p>
-          <p className="text-xs mt-1" style={{ color: "var(--muted)" }}>
-            Portfolio in progress
-          </p>
+        {/* Links */}
+        <div className="flex items-center gap-2 mt-auto">
+          {project.live && (
+            <a
+              href={project.live}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg transition-all duration-200"
+              style={{
+                background: project.color,
+                color: "#000",
+              }}
+              onMouseEnter={(e) =>
+                ((e.currentTarget as HTMLElement).style.opacity = "0.85")
+              }
+              onMouseLeave={(e) =>
+                ((e.currentTarget as HTMLElement).style.opacity = "1")
+              }
+            >
+              <ArrowUpRight size={13} />
+              Live Site
+            </a>
+          )}
+          {project.github && (
+            <a
+              href={project.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-all duration-200"
+              style={{
+                background: "var(--surface-2)",
+                border: "1px solid var(--border-bright)",
+                color: "var(--muted-2)",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.color = "var(--foreground)";
+                (e.currentTarget as HTMLElement).style.borderColor = "var(--border-bright)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.color = "var(--muted-2)";
+              }}
+            >
+              <GitHubIcon />
+              GitHub
+            </a>
+          )}
+          {!isLive && (
+            <span
+              className="text-xs px-3 py-1.5 rounded-lg"
+              style={{
+                background: "var(--surface-2)",
+                border: "1px solid var(--border)",
+                color: "var(--muted)",
+              }}
+            >
+              Coming soon
+            </span>
+          )}
         </div>
       </div>
     </motion.div>
@@ -174,6 +260,8 @@ function ProjectCard({
 export default function Portfolio() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+
+  const liveCount = projects.filter((p) => p.status === "live").length;
 
   return (
     <section
@@ -205,53 +293,61 @@ export default function Portfolio() {
                 className="font-bold leading-tight mb-3"
                 style={{ fontSize: "clamp(2rem, 4vw, 3rem)" }}
               >
-                Work in progress
+                Selected work
               </h2>
               <p className="text-base max-w-xl" style={{ color: "var(--muted)" }}>
-                Case studies and projects are being documented. Here&apos;s a preview of
-                what&apos;s coming — real work, real results.
+                Real projects — shipped for clients and built for scale. More
+                on the way as I push deeper into AI engineering.
               </p>
             </div>
-            <div
-              className="flex items-center gap-2 text-sm px-4 py-2 rounded-lg shrink-0"
-              style={{
-                background: "var(--cyan-dim)",
-                border: "1px solid rgba(0,212,255,0.2)",
-                color: "var(--cyan)",
-              }}
-            >
-              <ExternalLink size={14} />
-              <span className="font-medium">6 projects planned</span>
+            <div className="flex items-center gap-3 shrink-0">
+              <div
+                className="flex items-center gap-2 text-sm px-4 py-2 rounded-lg"
+                style={{
+                  background: "rgba(74,222,128,0.08)",
+                  border: "1px solid rgba(74,222,128,0.2)",
+                  color: "#4ade80",
+                }}
+              >
+                <span
+                  className="w-2 h-2 rounded-full"
+                  style={{ background: "#4ade80", boxShadow: "0 0 6px #4ade80" }}
+                />
+                <span className="font-semibold">{liveCount} live</span>
+              </div>
+              <a
+                href="https://github.com/amoani-yeboah19"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-sm px-4 py-2 rounded-lg transition-all duration-200"
+                style={{
+                  background: "var(--surface-2)",
+                  border: "1px solid var(--border)",
+                  color: "var(--muted-2)",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.borderColor = "rgba(0,212,255,0.3)";
+                  (e.currentTarget as HTMLElement).style.color = "var(--foreground)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
+                  (e.currentTarget as HTMLElement).style.color = "var(--muted-2)";
+                }}
+              >
+                <GitHubIcon />
+                GitHub
+                <ExternalLink size={12} />
+              </a>
             </div>
           </div>
         </motion.div>
 
         {/* Grid */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {placeholderProjects.map((p, i) => (
+          {projects.map((p, i) => (
             <ProjectCard key={p.title} project={p} index={i} />
           ))}
         </div>
-
-        {/* CTA below */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.4, duration: 0.6 }}
-          className="text-center mt-14"
-        >
-          <p className="text-sm mb-4" style={{ color: "var(--muted)" }}>
-            Want to see my Fiverr work or discuss a project?
-          </p>
-          <a
-            href="#contact"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold btn-outline"
-          >
-            Let&apos;s talk
-            <ExternalLink size={14} />
-          </a>
-        </motion.div>
       </div>
     </section>
   );

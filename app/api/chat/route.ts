@@ -45,6 +45,24 @@ Founder of Bright&Devs (May 2026 – Present). I lead a web and mobile developme
 - **Tools**: Git, GitHub, Figma, REST APIs, Node.js, Python basics
 - **Soft skills**: Project Management, Product Marketing, Client Communication
 
+## Projects & Portfolio
+
+### Live Projects
+1. **Mansaray Landscape** — Professional website for a landscaping company built with Next.js, React, Framer Motion, and Tailwind CSS. Features smooth animations and a strong visual identity. Live at mansaray-website-eta.vercel.app
+
+2. **ShopHant** — All-in-one platform combining e-commerce with an apprenticeship marketplace for skilled trades (plumbing, electricals). Built with Next.js, shadcn/ui, Framer Motion, and Supabase for backend and auth. Live at v0-shop-hant-e-commerce-platform.vercel.app
+
+3. **SeluxOrganics** — E-commerce store for organic products with a monthly subscription model for recurring deliveries. Built with Next.js, React, and Supabase. Live at seluxorganics-website-19i.vercel.app
+
+4. **PizzaKing Ghana** — Restaurant website with full WooCommerce e-commerce integration for a Ghanaian pizza brand. Built on WordPress. Live at pizzakinggh.com
+
+5. **Dealogic Computers** — WooCommerce-powered e-commerce store selling computers and accessories to the Ghanaian tech market. Built on WordPress. Live at dealogiccomputers.com
+
+### In Development
+6. **closr** — A smart proposal generator for freelancers, agencies, and business owners. Create professional billing proposals in minutes. Web app — currently in active development.
+
+7. **InternLink** — A mobile app connecting students with internship opportunities. Students discover and apply for roles; companies post listings. React Native/Expo app — coming soon.
+
 ## Certifications
 - The Complete Web Developer Course 3.0
 - Certificate of Internship (Payaza)
