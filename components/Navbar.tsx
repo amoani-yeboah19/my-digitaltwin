@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Sparkles } from "lucide-react";
+import Link from "next/link";
 
 const links = [
   { label: "About", href: "#about" },
@@ -69,7 +70,25 @@ export default function Navbar() {
         </nav>
 
         {/* CTA + Mobile toggle */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
+          <Link
+            href="/twin"
+            className="hidden md:flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-lg transition-all duration-200"
+            style={{
+              background: "var(--cyan-dim)",
+              border: "1px solid rgba(0,212,255,0.25)",
+              color: "var(--cyan)",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLElement).style.background = "rgba(0,212,255,0.2)";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.background = "var(--cyan-dim)";
+            }}
+          >
+            <Sparkles size={13} />
+            Digital Twin
+          </Link>
           <a
             href="#contact"
             className="hidden md:block text-xs font-bold px-4 py-2 rounded btn-primary"
@@ -113,6 +132,15 @@ export default function Navbar() {
                   {link.label}
                 </a>
               ))}
+              <Link
+                href="/twin"
+                className="flex items-center gap-2 text-sm font-semibold py-1"
+                style={{ color: "var(--cyan)" }}
+                onClick={() => setMenuOpen(false)}
+              >
+                <Sparkles size={14} />
+                Digital Twin
+              </Link>
               <a
                 href="#contact"
                 className="text-xs font-bold px-4 py-2 rounded btn-primary inline-block text-center"
