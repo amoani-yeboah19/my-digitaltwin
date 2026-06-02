@@ -45,7 +45,7 @@ const entries: Entry[] = [
     company: "Theme Wire",
     role: "WordPress Developer",
     period: "Sep 2025 — Nov 2025",
-    location: "Accra",
+    location: "Remote",
     desc: "Developed and customized WordPress themes and solutions for client projects.",
   },
   {

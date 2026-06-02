@@ -24,7 +24,7 @@ const categories = [
       { name: "Theme Development", level: 92 },
       { name: "Plugin Development", level: 80 },
       { name: "WooCommerce", level: 75 },
-      { name: "ACF & Gutenberg", level: 85 },
+      { name: "Elementor & Gutenberg", level: 85 },
       { name: "SEO Optimization", level: 88 },
     ],
   },
