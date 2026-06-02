@@ -102,61 +102,69 @@ export default function TwinChat() {
       setLoading(true);
       setStreamingContent("");
 
-      const timeout = setTimeout(() => abortRef.current?.abort(), 45000);
-      abortRef.current = new AbortController();
+      const attemptFetch = async (attempt: number): Promise<void> => {
+        abortRef.current = new AbortController();
+        const timeout = setTimeout(() => abortRef.current?.abort(), 60000);
 
-      try {
-        const res = await fetch("/api/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ messages: history }),
-          signal: abortRef.current.signal,
-        });
+        try {
+          const res = await fetch("/api/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ messages: history }),
+            signal: abortRef.current.signal,
+          });
 
-        if (!res.ok) {
-          const errText = await res.text().catch(() => `HTTP ${res.status}`);
-          throw new Error(errText.includes("rate_limited") || res.status === 429 ? "rate_limited" : errText);
-        }
+          if (!res.ok) {
+            const errText = await res.text().catch(() => `HTTP ${res.status}`);
+            throw new Error(errText.includes("rate_limited") || res.status === 429 ? "rate_limited" : errText);
+          }
 
-        const reader = res.body?.getReader();
-        const decoder = new TextDecoder();
-        let full = "";
+          const reader = res.body?.getReader();
+          const decoder = new TextDecoder();
+          let full = "";
+          if (!reader) throw new Error("No response body");
 
-        if (!reader) throw new Error("No response body");
-
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-
-          const chunk = decoder.decode(value, { stream: true });
-          for (const line of chunk.split("\n")) {
-            if (!line.startsWith("data: ")) continue;
-            const data = line.slice(6).trim();
-            if (data === "[DONE]") continue;
-            try {
-              const json = JSON.parse(data);
-              const delta = json.choices?.[0]?.delta?.content ?? "";
-              if (delta) {
-                full += delta;
-                setStreamingContent(full);
-              }
-            } catch {
-              /* partial chunk */
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            const chunk = decoder.decode(value, { stream: true });
+            for (const line of chunk.split("\n")) {
+              if (!line.startsWith("data: ")) continue;
+              const data = line.slice(6).trim();
+              if (data === "[DONE]") continue;
+              try {
+                const json = JSON.parse(data);
+                const delta = json.choices?.[0]?.delta?.content ?? "";
+                if (delta) { full += delta; setStreamingContent(full); }
+              } catch { /* partial chunk */ }
             }
           }
-        }
 
-        setMessages((prev) => [
-          ...prev,
-          { role: "assistant", content: full || "I received an empty response — please try again." },
-        ]);
-      } catch (err: unknown) {
-        if (err instanceof Error && err.name === "AbortError") return;
-        console.error("[TwinChat] chat error:", err);
-        const msg = errorMessage(err);
-        if (msg) setMessages((prev) => [...prev, { role: "assistant", content: msg }]);
+          setMessages((prev) => [
+            ...prev,
+            { role: "assistant", content: full || "I received an empty response — please try again." },
+          ]);
+        } catch (err: unknown) {
+          clearTimeout(timeout);
+          if (err instanceof Error && err.name === "AbortError") return;
+          const errMsg = err instanceof Error ? err.message : String(err);
+          if (attempt === 0 && !errMsg.includes("rate_limited")) {
+            setStreamingContent("");
+            await new Promise((r) => setTimeout(r, 1200));
+            return attemptFetch(1);
+          }
+          console.error("[TwinChat] chat error:", err);
+          const friendly = errorMessage(err);
+          if (friendly) setMessages((prev) => [...prev, { role: "assistant", content: friendly }]);
+          return;
+        } finally {
+          clearTimeout(timeout);
+        }
+      };
+
+      try {
+        await attemptFetch(0);
       } finally {
-        clearTimeout(timeout);
         setLoading(false);
         setStreamingContent("");
       }
