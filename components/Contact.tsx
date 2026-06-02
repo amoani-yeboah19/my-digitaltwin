@@ -53,19 +53,40 @@ function FadeIn({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
   );
 }
 
+type Status = "idle" | "sending" | "sent" | "error";
+
 export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<Status>("idle");
+  const [errorMsg, setErrorMsg] = useState("");
 
-  const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const subject = encodeURIComponent(`Portfolio Contact from ${form.name}`);
-    const body = encodeURIComponent(
-      `Name: ${form.name}\nEmail: ${form.email}\n\nMessage:\n${form.message}`
-    );
-    window.location.href = `mailto:bamoaniyeboah@gmail.com?subject=${subject}&body=${body}`;
-    setSent(true);
-    setTimeout(() => setSent(false), 4000);
+    setStatus("sending");
+    setErrorMsg("");
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setErrorMsg(data.error || "Something went wrong. Please try again.");
+        setStatus("error");
+        return;
+      }
+
+      setStatus("sent");
+      setForm({ name: "", email: "", message: "" });
+      setTimeout(() => setStatus("idle"), 5000);
+    } catch {
+      setErrorMsg("Network error — please check your connection and try again.");
+      setStatus("error");
+    }
   };
 
   const inputStyle = {
@@ -263,17 +284,46 @@ export default function Contact() {
                 />
               </div>
 
+              {status === "error" && (
+                <p
+                  className="text-sm px-4 py-3 rounded-lg"
+                  style={{
+                    background: "rgba(239,68,68,0.1)",
+                    border: "1px solid rgba(239,68,68,0.3)",
+                    color: "#f87171",
+                  }}
+                >
+                  {errorMsg}
+                </p>
+              )}
+
               <button
                 type="submit"
+                disabled={status === "sending" || status === "sent"}
                 className="w-full py-3 px-6 rounded-lg text-sm font-bold flex items-center justify-center gap-2 btn-primary"
-                style={{ letterSpacing: "0.05em" }}
+                style={{
+                  letterSpacing: "0.05em",
+                  opacity: status === "sending" ? 0.7 : 1,
+                  cursor: status === "sending" ? "not-allowed" : "pointer",
+                }}
               >
-                {sent ? (
+                {status === "sending" && (
+                  <>
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                      style={{ width: 16, height: 16, border: "2px solid #000", borderTopColor: "transparent", borderRadius: "50%" }}
+                    />
+                    Sending...
+                  </>
+                )}
+                {status === "sent" && (
                   <>
                     <CheckCircle size={16} />
-                    Opening Email Client...
+                    Message Sent!
                   </>
-                ) : (
+                )}
+                {(status === "idle" || status === "error") && (
                   <>
                     <Send size={16} />
                     Send Message
