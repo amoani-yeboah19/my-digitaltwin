@@ -161,7 +161,7 @@ export async function POST(request: NextRequest) {
       "X-Title": "Bright Amoani-Yeboah Portfolio",
     },
     body: JSON.stringify({
-      model: "openai/gpt-oss-120b",
+      model: "openai/gpt-4o-mini",
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
         ...messages,
@@ -169,13 +169,6 @@ export async function POST(request: NextRequest) {
       stream: true,
       max_tokens: 500,
       temperature: 0.75,
-      // Prefer fast direct-inference providers; skip reasoning/chain-of-thought ones
-      // that hold the connection silent for 30-60 s before producing content.
-      provider: {
-        order: ["Novita", "Amazon Bedrock", "Together"],
-        allow_fallbacks: true,
-        ignore: ["DekaLLM"],
-      },
     }),
   });
 
