@@ -122,13 +122,16 @@ export default function TwinChat() {
           const reader = res.body?.getReader();
           const decoder = new TextDecoder();
           let full = "";
+          let buffer = "";
           if (!reader) throw new Error("No response body");
 
           while (true) {
             const { done, value } = await reader.read();
             if (done) break;
-            const chunk = decoder.decode(value, { stream: true });
-            for (const line of chunk.split("\n")) {
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split("\n");
+            buffer = lines.pop() ?? "";
+            for (const line of lines) {
               if (!line.startsWith("data: ")) continue;
               const data = line.slice(6).trim();
               if (data === "[DONE]") continue;
@@ -136,7 +139,7 @@ export default function TwinChat() {
                 const json = JSON.parse(data);
                 const delta = json.choices?.[0]?.delta?.content ?? "";
                 if (delta) { full += delta; setStreamingContent(full); }
-              } catch { /* partial chunk */ }
+              } catch { /* malformed event */ }
             }
           }
 
