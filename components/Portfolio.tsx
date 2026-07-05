@@ -18,16 +18,6 @@ type Project = {
 const projects: Project[] = [
   // ── Web & Mobile Apps ──────────────────────────────────
   {
-    tag: "Web App",
-    title: "ShopHant",
-    desc: "All-in-one platform merging e-commerce with an apprenticeship marketplace for skilled trades — plumbing, electricals and more — in one seamless experience.",
-    tech: ["Next.js", "React", "shadcn/ui", "Supabase", "Framer Motion"],
-    color: "#60a5fa",
-    status: "live",
-    live: "https://v0-shop-hant-e-commerce-platform.vercel.app/",
-    github: "https://github.com/amoani-yeboah19/shophant-e-commerce-platform",
-  },
-  {
     tag: "Mobile App",
     title: "InternLink",
     desc: "A mobile platform bridging the gap between students and internship opportunities — students discover and apply for roles, companies post and manage listings, all in one app.",

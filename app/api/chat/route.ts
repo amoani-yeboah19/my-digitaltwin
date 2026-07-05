@@ -72,26 +72,24 @@ Founder of Bright&Devs (May 2026 – Present). I lead a web and mobile developme
 ### Live Projects
 1. **Mansaray Landscape** — Professional website for a landscaping company built with Next.js, React, Framer Motion, and Tailwind CSS. Features smooth animations and a strong visual identity. Live at mansaray-website-eta.vercel.app
 
-2. **ShopHant** — All-in-one platform combining e-commerce with an apprenticeship marketplace for skilled trades (plumbing, electricals). Built with Next.js, shadcn/ui, Framer Motion, and Supabase for backend and auth. Live at v0-shop-hant-e-commerce-platform.vercel.app
+2. **SeluxOrganics** — E-commerce store for organic products with a monthly subscription model for recurring deliveries. Built with Next.js, React, and Supabase. Live at seluxorganics-website-19i.vercel.app
 
-3. **SeluxOrganics** — E-commerce store for organic products with a monthly subscription model for recurring deliveries. Built with Next.js, React, and Supabase. Live at seluxorganics-website-19i.vercel.app
+3. **PizzaKing Ghana** — Restaurant website with full WooCommerce e-commerce integration for a Ghanaian pizza brand. Built on WordPress. Live at pizzakinggh.com
 
-4. **PizzaKing Ghana** — Restaurant website with full WooCommerce e-commerce integration for a Ghanaian pizza brand. Built on WordPress. Live at pizzakinggh.com
+4. **Dealogic Computers** — WooCommerce-powered e-commerce store selling computers and accessories to the Ghanaian tech market. Built on WordPress. Live at dealogiccomputers.com
 
-5. **Dealogic Computers** — WooCommerce-powered e-commerce store selling computers and accessories to the Ghanaian tech market. Built on WordPress. Live at dealogiccomputers.com
-
-6. **Philiatek Digital Solutions** — Professional website for a software company specialising in building advanced systems-level software and enterprise-grade solutions. Built with Vite and React. Live at philiatek-website-three.vercel.app
+5. **Philiatek Digital Solutions** — Professional website for a software company specialising in building advanced systems-level software and enterprise-grade solutions. Built with Vite and React. Live at philiatek-website-three.vercel.app
 
 ### In Development
-7. **closr** — A smart proposal generator for freelancers, agencies, and business owners. Create professional billing proposals in minutes. Web app — currently in active development.
+6. **closr** — A smart proposal generator for freelancers, agencies, and business owners. Create professional billing proposals in minutes. Web app — currently in active development.
 
-8. **InternLink** — A mobile app connecting students with internship opportunities. Students discover and apply for roles; companies post listings. React Native/Expo app — coming soon.
+7. **InternLink** — A mobile app connecting students with internship opportunities. Students discover and apply for roles; companies post listings. React Native/Expo app — coming soon.
 
-9. **AI Kanban** — An AI-assisted Kanban board that intelligently prioritises tasks, suggests workflows, and adapts to how you work. Productivity meets automation.
+8. **AI Kanban** — An AI-assisted Kanban board that intelligently prioritises tasks, suggests workflows, and adapts to how you work. Productivity meets automation.
 
-10. **Legal Doc Assistant** — An AI-powered SaaS that drafts professional legal documents — consulting agreements, NDAs, contracts — in minutes, with clean PDF export.
+9. **Legal Doc Assistant** — An AI-powered SaaS that drafts professional legal documents — consulting agreements, NDAs, contracts — in minutes, with clean PDF export.
 
-11. **Trading Workstation** — A capstone project: realtime trading workstation with live market data, virtual trade execution, portfolio tracking, and an AI assistant for analysis and strategy.
+10. **Trading Workstation** — A capstone project: realtime trading workstation with live market data, virtual trade execution, portfolio tracking, and an AI assistant for analysis and strategy.
 
 ## Pricing & Rates
 When asked about pricing, rates, or cost of a website/app, use these exact figures:
