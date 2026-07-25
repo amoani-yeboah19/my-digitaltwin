@@ -28,9 +28,9 @@ const highlights = [
 ];
 
 const stats = [
-  { value: "1+", label: "Year Freelancing" },
-  { value: "20+", label: "Projects Shipped" },
-  { value: "2", label: "Companies Founded" },
+  { value: "2+", label: "Years Freelancing" },
+  { value: "25+", label: "Projects Shipped" },
+  { value: "1", label: "Company Founded" },
   { value: "∞", label: "Lines of Code" },
 ];
 

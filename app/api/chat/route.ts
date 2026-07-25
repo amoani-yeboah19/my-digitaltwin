@@ -69,6 +69,11 @@ Founder of Bright&Devs (May 2026 – Present). I lead a web and mobile developme
 
 ## Projects & Portfolio
 
+### By the Numbers
+- 25+ projects shipped
+- 2+ years freelancing
+- 1 company founded (Bright&Devs)
+
 ### Live Projects
 1. **Mansaray Landscape** — Professional website for a landscaping company built with Next.js, React, Framer Motion, and Tailwind CSS. Features smooth animations and a strong visual identity. Live at mansaray-website-eta.vercel.app
 
@@ -80,16 +85,18 @@ Founder of Bright&Devs (May 2026 – Present). I lead a web and mobile developme
 
 5. **Philiatek Digital Solutions** — Professional website for a software company specialising in building advanced systems-level software and enterprise-grade solutions. Built with Vite and React. Live at philiatek-website-three.vercel.app
 
+6. **360 Group** — Website for a Ghanaian event management firm with 15+ years of experience and 500+ events delivered. Covers corporate and private events, venue consultation, and local and international artist booking. Built with Next.js, React, Tailwind CSS, and shadcn/ui. Live at 360groupltdgh.co
+
 ### In Development
-6. **closr** — A smart proposal generator for freelancers, agencies, and business owners. Create professional billing proposals in minutes. Web app — currently in active development.
+7. **closr** — A smart proposal generator for freelancers, agencies, and business owners. Create professional billing proposals in minutes. Web app — currently in active development.
 
-7. **InternLink** — A mobile app connecting students with internship opportunities. Students discover and apply for roles; companies post listings. React Native/Expo app — coming soon.
+8. **InternLink** — A mobile app connecting students with internship opportunities. Students discover and apply for roles; companies post listings. React Native/Expo app — coming soon.
 
-8. **AI Kanban** — An AI-assisted Kanban board that intelligently prioritises tasks, suggests workflows, and adapts to how you work. Productivity meets automation.
+9. **AI Kanban** — An AI-assisted Kanban board that intelligently prioritises tasks, suggests workflows, and adapts to how you work. Productivity meets automation.
 
-9. **Legal Doc Assistant** — An AI-powered SaaS that drafts professional legal documents — consulting agreements, NDAs, contracts — in minutes, with clean PDF export.
+10. **Legal Doc Assistant** — An AI-powered SaaS that drafts professional legal documents — consulting agreements, NDAs, contracts — in minutes, with clean PDF export.
 
-10. **Trading Workstation** — A capstone project: realtime trading workstation with live market data, virtual trade execution, portfolio tracking, and an AI assistant for analysis and strategy.
+11. **Trading Workstation** — A capstone project: realtime trading workstation with live market data, virtual trade execution, portfolio tracking, and an AI assistant for analysis and strategy.
 
 ## Pricing & Rates
 When asked about pricing, rates, or cost of a website/app, use these exact figures:

@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { ArrowDown, Mail } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -140,6 +141,48 @@ export default function Hero() {
 
       {/* Content — pt-24 ensures content always clears the fixed 64px navbar */}
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center pt-24 pb-16">
+        {/* Portrait */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.88 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+          className="flex justify-center mb-8"
+        >
+          <div className="relative">
+            <div
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                inset: "-16px",
+                borderRadius: "50%",
+                background:
+                  "radial-gradient(circle, rgba(0,212,255,0.22) 0%, transparent 70%)",
+                animation: "pulse-glow 4s ease-in-out infinite",
+              }}
+            />
+            <div
+              className="relative rounded-full overflow-hidden"
+              style={{
+                width: "clamp(112px, 16vw, 156px)",
+                height: "clamp(112px, 16vw, 156px)",
+                border: "2px solid rgba(0,212,255,0.35)",
+                boxShadow: "0 0 40px rgba(0,212,255,0.18)",
+              }}
+            >
+              <Image
+                src="/bright.png"
+                alt="Bright Amoani-Yeboah"
+                fill
+                sizes="156px"
+                preload
+                /* the source already has a circular crop on white; the slight
+                   scale-up hides its edge inside the round container */
+                style={{ objectFit: "cover", transform: "scale(1.05)" }}
+              />
+            </div>
+          </div>
+        </motion.div>
+
         {/* Badge */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

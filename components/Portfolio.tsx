@@ -90,6 +90,15 @@ const projects: Project[] = [
     github: "https://github.com/amoani-yeboah19/mansaray-website",
   },
   {
+    tag: "Freelance",
+    title: "360 Group",
+    desc: "Website for a Ghanaian event management firm with 15+ years and 500+ events behind it — corporate and private events, venue consultation, and artist booking, presented to win enquiries.",
+    tech: ["Next.js", "React", "Tailwind CSS", "shadcn/ui"],
+    color: "#e879f9",
+    status: "live",
+    live: "https://www.360groupltdgh.co/",
+  },
+  {
     tag: "WordPress",
     title: "PizzaKing Ghana",
     desc: "Full restaurant website with integrated e-commerce for a Ghanaian pizza brand — online ordering, menu management, and a branded experience on WordPress.",
